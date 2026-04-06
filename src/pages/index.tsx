@@ -1,76 +1,82 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+    const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); 
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/login", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        router.push("dashboard")
+    
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black`}>
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="relative flex min-h-screen flex-col">
+        <header className="flex items-center gap-3 border-b border-gray-300 px-10 py-6 shadow-md">
+            <img src="/images/appLogo.png"/>
+            <h1 className="text-5xl font-medium text-black font-oswald">Progress</h1>
+        </header>
+        <main className="flex flex-1 flex-col items-center justify-center px-6 font-heebo" >
+            <h2 className="mb-12 text-5xl font-bold text-black">Login</h2>
+            <div className="w-full max-w-xl">
+                <form className= "flex flex-col gap-10" onSubmit={handleLogin}>
+                    <div>
+                        <input id="email" type="email" placeholder="Email" value = {email} 
+                        onChange= {(e) => setEmail(e.target.value)}
+                        className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent text-xl outline-none"/>
+                    </div>
+                    <div>
+                        <input id="password" type="password" placeholder="Password" value = {password}
+                        onChange = {(e) => setPassword(e.target.value)}
+                        className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent text-xl outline-none"/>
+                    </div>
+                    <button type="submit" 
+                    disabled = {loading}
+                    className="bg-[#D21312] border rounded-[20px] text-3xl py-2 m-4 text-white font-medium">{loading ? "Logging in ..." : "Log in"}</button>
+                    {error && (<p style={{ color: "red", marginTop: "10px" }}>{error}</p>)}
+                </form>
+            </div>
+            <p className="mt-4 text-xl font-light text-gray-600">Don't have an account?
+                <Link href="/signup" className="font-semibold text-black"> Sign up</Link>
+            </p>
+        
+        </main>
+        <div className ="absolute bottom-0 left-0">
+            <img src="/images/quarterCircle.png" className =""/>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <footer className="flex flex-col items-center justify-content m-10 font-light">
+            <p className="text-lg">Made with ♡ by Long Lam</p>
+            <p className="text-lg">© 2023 BOG Developer Bootcamp. All rights reserved.</p>
+        </footer>
     </div>
   );
 }

@@ -34,7 +34,7 @@ const handleSignup = async (e: React.FormEvent) => {
     const data = await res.json();
 
     if (data.success) {
-      router.push("/trainingLogs")
+      router.push("/training-logs")
     } else {
       setError(data.error);
     }

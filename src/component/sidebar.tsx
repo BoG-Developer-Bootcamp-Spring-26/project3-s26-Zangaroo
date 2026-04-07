@@ -11,26 +11,27 @@ export default function Sidebar() {
     const isAllUsersActive = router.pathname === "/all-users";
 
     return (
-        <div>
-            <div id="public-view">
-                <Link href="/training-logs" className = {`flex items-center gap-4 ${isTrainingLogsActive ? "text-white font-semibold" : "text-gray-600"}`}>
-                    <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogo.png"} alt="Training Logs icon"/>
+        <div className="max-w-84 m-5">
+            <div id="public-view" className="flex flex-col gap-4 gap-4">
+                <Link href="/training-logs" className = {`flex items-center gap-4 px-4 py-3 rounded-xl  ${isTrainingLogsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
+                    <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogs.png"} alt="Training Logs icon"/>
                     <span>Training Logs</span>
                 </Link>
-                <Link href="/animals" className = {`flex items-center gap-4 ${isAnimalsActive ? "text-white font-semibold" : "text-gray-600"}`}>
-                    <img src={isAnimalsActive ? "/images/activeAnimalsLogo.png" : "/images/inactiveAnimalsLogo.png"} alt="Animals icon"/>
+                <Link href="/animals" className = {`flex items-center gap-4 px-4 py-3 rounded-xl ${isAnimalsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
+                    <img src={isAnimalsActive ? "/images/activeAnimalsLogo.png" : "/images/inactiveAnimalLogo.png"} alt="Animals icon"/>
                     <span>Animals</span>
                 </Link>
             </div>
-            <div id="admin-view">
-                <Link href="/all-training" className = {`flex items-center gap-4 ${isAllTrainingActive ? "text-white font-semibold" : "text-gray-600"}`} >
+            <div id="admin-view" className="flex flex-col gap-4 gap-4">
+                <p className="mt-8 mb-2">Admin Access</p>
+                <Link href="/all-training" className = {`flex items-center gap-4 px-4 py-3 rounded-xl ${isAllTrainingActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`} >
                     <img src= {isAllTrainingActive ? "/images/activeAllTrainingLogo.png" : "/images/inactiveAllTrainingLogo.png"} alt="All Training Logs icon"/>
                     <span>All training</span>
                 </Link>
                 <Link
                     href="/all-animals"
-                    className={`flex items-center gap-4 ${
-                        isAllAnimalsActive ? "text-white font-semibold" : "text-gray-600"
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl ${
+                        isAllAnimalsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"
                     }`}
                 >
                     <img
@@ -46,8 +47,8 @@ export default function Sidebar() {
 
                 <Link
                     href="/all-users"
-                    className={`flex items-center gap-4 ${
-                        isAllUsersActive ? "text-white font-semibold" : "text-gray-600"
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl ${
+                        isAllUsersActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"
                     }`}
                 >
                     <img

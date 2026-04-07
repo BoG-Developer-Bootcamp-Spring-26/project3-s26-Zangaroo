@@ -16,7 +16,7 @@ const heebo = Heebo({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (<main className={`${oswald.variable} ${heebo.variable}`}>
-    <Component {...pageProps} />;
+    <Component {...pageProps} />
     </main>
   )
 }

@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function Home() {
 
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function Home() {
       const data = await res.json();
 
       if (data.success) {
-        router.push("dashboard")
+        router.push("/training-logs")
     
       } else {
         setError(data.error);

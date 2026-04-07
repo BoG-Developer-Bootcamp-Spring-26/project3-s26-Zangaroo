@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function Home() {
 const [fullName, setFullName] = useState("");
@@ -34,7 +34,7 @@ const handleSignup = async (e: React.FormEvent) => {
     const data = await res.json();
 
     if (data.success) {
-      router.push("/dashboard")
+      router.push("/trainingLogs")
     } else {
       setError(data.error);
     }

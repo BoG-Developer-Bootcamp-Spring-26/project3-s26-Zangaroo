@@ -15,7 +15,7 @@ export default function Sidebar() {
 
 
     return (
-        <div className="max-w-84 m-5 flex flex-col h-full">
+        <div className="max-w-84 m-5 flex flex-col h-full ">
             <div id="public-view" className="flex flex-col gap-4 gap-4">
                 <Link href="/training-logs" className = {`flex items-center gap-4 px-4 py-3 rounded-xl  ${isTrainingLogsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
                     <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogs.png"} alt="Training Logs icon"/>
@@ -82,11 +82,11 @@ export default function Sidebar() {
                 
             </div>
             <Link
-            href = "/"
-            >
-            <img src = "/images/logoutLogo.png" alt="Logout icon" className="mt-4 cursor-pointer" onClick={() => {
-                logout;
-            }}/>
+                href = "/"
+                >
+                <img src = "/images/logoutLogo.png" alt="Logout icon" className="mt-4 cursor-pointer" onClick={() => {
+                    logout;
+                }}/>
             </Link>
             </div>
         )}

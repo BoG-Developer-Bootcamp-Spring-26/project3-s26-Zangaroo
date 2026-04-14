@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Oswald , Heebo} from "next/font/google";
+import { AuthProvider } from "@/AuthContext";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -15,8 +16,11 @@ const heebo = Heebo({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (<main className={`${oswald.variable} ${heebo.variable}`}>
+  return (
+    <AuthProvider>
+  <main className={`${oswald.variable} ${heebo.variable}`}>
     <Component {...pageProps} />
     </main>
-  )
+    </AuthProvider>
+  );
 }

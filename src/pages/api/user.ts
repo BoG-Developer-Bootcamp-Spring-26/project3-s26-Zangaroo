@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method not allowed" });
+    return res.status(500).json({ success: false, error: "Method not allowed" });
   }
 
   const { fullName, email, password, confirmPassword, isAdmin } = req.body;
@@ -47,7 +47,7 @@ export default async function handler(
     });
 
  
-   return res.status(200).json({success: true, userid: newUser._id, isAdmin: newUser.isAdmin,
+   return res.status(200).json({success: true, userid: newUser._id, isAdmin: newUser.isAdmin, fullName: newUser.fullName,
       });
   } catch (err) {
     console.error(err);

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useAuth } from "@/AuthContext";
 
 export default function Sidebar() {
     const router = useRouter();
@@ -9,9 +10,12 @@ export default function Sidebar() {
     const isAllTrainingActive = router.pathname === "/all-training";
     const isAllAnimalsActive = router.pathname === "/all-animals";
     const isAllUsersActive = router.pathname === "/all-users";
+    const { user } = useAuth(); 
+    const { logout } = useAuth(); 
+
 
     return (
-        <div className="max-w-84 m-5">
+        <div className="max-w-84 m-2 flex flex-col h-full border-r p-4">
             <div id="public-view" className="flex flex-col gap-4 gap-4">
                 <Link href="/training-logs" className = {`flex items-center gap-4 px-4 py-3 rounded-xl  ${isTrainingLogsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
                     <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogs.png"} alt="Training Logs icon"/>
@@ -22,7 +26,8 @@ export default function Sidebar() {
                     <span>Animals</span>
                 </Link>
             </div>
-            <div id="admin-view" className="flex flex-col gap-4 gap-4">
+            <>
+            { user?.isAdmin && <div id="admin-view" className="flex flex-col gap-4 gap-4">
                 <p className="mt-8 mb-2">Admin Access</p>
                 <Link href="/all-training" className = {`flex items-center gap-4 px-4 py-3 rounded-xl ${isAllTrainingActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`} >
                     <img src= {isAllTrainingActive ? "/images/activeAllTrainingLogo.png" : "/images/inactiveAllTrainingLogo.png"} alt="All Training Logs icon"/>
@@ -62,6 +67,29 @@ export default function Sidebar() {
                     <span>All Users</span>
                 </Link>
             </div>
+            }
+            </>
+            {user && (
+                <div id = "profileSection" className="flex flex-row items-center mt-auto mb-10 gap-x-4"> 
+                <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">
+                    {user.fullName.charAt(0).toUpperCase()}
+                </span>
+                </div>
+            <div id = "profileInfo">
+                <p className="mt-8 mb-2 font-semibold">{user.fullName}</p>
+                <p className="mb-2 text-sm text-gray-500">{user.isAdmin ? "Admin" : "User"}</p>
+                
+            </div>
+            <Link
+                href = "/"
+                >
+                <img src = "/images/logoutLogo.png" alt="Logout icon" className="mt-4 cursor-pointer" onClick={() => {
+                    logout;
+                }}/>
+            </Link>
+            </div>
+        )}
         </div>
-    )
+    );
 }

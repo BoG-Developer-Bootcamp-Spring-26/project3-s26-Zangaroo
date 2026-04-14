@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
+import { useAuth } from "@/AuthContext";
+ 
 export default function Home() {
 
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth(); 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); 
@@ -17,7 +19,7 @@ export default function Home() {
     setError("");
 
     try {
-      const res = await fetch("/api/login", { 
+      const res = await fetch("/api/verify", { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/AuthContext";
 
 export default function Home() {
 const [fullName, setFullName] = useState("");
@@ -10,7 +11,8 @@ const [password, setPassword] = useState("");
 const [confirmPassword, setConfirmPassword] = useState("");
 const [isAdmin, setIsAdmin] = useState(false);
 const router = useRouter();
-
+const { login } = useAuth(); 
+ 
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const handleSignup = async (e: React.FormEvent) => {
@@ -19,7 +21,7 @@ const handleSignup = async (e: React.FormEvent) => {
   setError("");
 
   try {
-    const res = await fetch("/api/signup", {
+    const res = await fetch("/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -34,6 +36,7 @@ const handleSignup = async (e: React.FormEvent) => {
     const data = await res.json();
 
     if (data.success) {
+      login(data); 
       router.push("/training-logs")
     } else {
       setError(data.error);

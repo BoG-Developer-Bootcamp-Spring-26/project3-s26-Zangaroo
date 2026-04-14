@@ -1,13 +1,47 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import Sidebar from "@/component/sidebar";
 import ProgressBar from "@/component/progressbar";
 import TrainingLogsCard from "./training-logs_card";
+import Link from "next/link";
 
+type TrainingLog = {
+    id: string;
+    title: string;
+    date: string;
+    userName: string;
+    animalName: string;
+    animalBreed: string;
+    hours: number;
+    description: string;
+};
+
+async function getTrainingLogs(): Promise<TrainingLog[]> {
+    try {
+        const res = await fetch("/api/training-log");
+        if (!res.ok) {
+            throw new Error("Failed to fetch training log data");
+        }
+
+        const data = await res.json();
+        return data.data;
+
+    }
+    catch(error) {
+        console.error("Failed to fetch training logs:", error);
+        return [];
+    }
+}
 
 export default function TrainingLogs() {
+    const [trainingLogs, setTrainingLogs] = useState<TrainingLog[]>([]);
+
+    useEffect(() => {
+        getTrainingLogs().then((logs) => {
+            setTrainingLogs(logs);
+        });
+    }, [])
+
     return (
         <div className="relative flex min-h-screen flex-col">
             <ProgressBar/>
@@ -23,28 +57,38 @@ export default function TrainingLogs() {
                             Training Logs
                         </h2>
 
-                        <button
+                        <Link
                             className="group flex items-center gap-2 text-sm font-medium text-neutral-500 transition-all hover:text-neutral-900"
-                            onClick={() => alert("Create Modal Logic Goes Here")}
+                            href="/create_training-log"
                         >
                             <img src="/images/createNewLogo.png"/>
                             <span>Create new</span>
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Training Logs Card */}
                     <div>
-                        <TrainingLogsCard
-                            title="Complete sit lessons"
-                            date="20"
-                            month="October"
-                            year="2023"
-                            userName="Long Lam"
-                            animalName="Lucy"
-                            animalBreed="Golden Retriever"
-                            hours={20}
-                            description="Lucy finishes the sit lessons very well today. Should give her a treat."
-                        />
+                        {trainingLogs.map((log) => {
+                            const fullDate = new Date(log.date);
+                            const day = String(fullDate.getDate());
+                            const month = fullDate.toLocaleString("default", { month: "short" });
+                            const year = String(fullDate.getFullYear());
+
+                            return (
+                                <TrainingLogsCard
+                                    key = {log.id}
+                                    title= {log.title}
+                                    date= {day}
+                                    month= {month}
+                                    year= {year}
+                                    userName= {log.userName}
+                                    animalName= {log.animalName}
+                                    animalBreed= {log.animalBreed}
+                                    hours={log.hours} 
+                                    description={log.description}
+                                />
+                            );
+                        })}
                     </div>
                 </main>
             </div>

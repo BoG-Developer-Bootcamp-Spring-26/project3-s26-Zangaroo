@@ -10,7 +10,7 @@ type TrainingLogsCardProps = {
   description: string;
 };
 
-export default function trainingLogsCard( {title, date, month, year, userName, animalName, animalBreed, hours, 
+export default function TrainingLogsCard( {title, date, month, year, userName, animalName, animalBreed, hours, 
     description}: TrainingLogsCardProps ) {
 
     return (
@@ -18,13 +18,13 @@ export default function trainingLogsCard( {title, date, month, year, userName, a
             <div id="date" className="flex flex-col items-center justify-center font-medium bg-[#070A52D9] p-4 rounded-tl-[20px] rounded-bl-[20px] text-white justify-center align-items font-oswald">
                 <div className="text-[48px]">{date}</div>
                 <div>
-                    {month} - {year}
+                    {month} - {year} 
                 </div>
             </div>
             <div id="info" className="font-heebo">
                 <div id="header" className = "flex gap-4 items-center">
                     <div className="text-[30px] font-bold">{title}</div>
-                    <div className="text-[#999999] text-[20px] bold-medium">{hours} hours</div>
+                    <div className="text-[#999999] text-[20px] bold-medium">• {hours} hours</div>
                 </div>
 
                 <div id="identifier" className = "flex gap-6 text-[#999999] font-medium text-[20px]">

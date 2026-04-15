@@ -28,9 +28,8 @@ export default function Home() {
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem("userId", data.userid);
-        localStorage.setItem("isAdmin", String(data.isAdmin));
-        router.push("/training-logs")
+        login(data);
+        router.push("/training-logs");
       } else {
         setError(data.error);
       }

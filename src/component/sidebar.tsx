@@ -10,12 +10,12 @@ export default function Sidebar() {
     const isAllTrainingActive = router.pathname === "/all-training";
     const isAllAnimalsActive = router.pathname === "/all-animals";
     const isAllUsersActive = router.pathname === "/all-users";
-    const { user } = useAuth(); 
-    const { logout } = useAuth(); 
+    const { user, logout } = useAuth(); 
+   
 
 
     return (
-        <div className="w-84 m-2 flex flex-col h-full border-r p-4">
+        <div className="w-80 m-2 flex flex-col h-full border-r p-4">
             <div id="public-view" className="flex flex-col gap-4 gap-4">
                 <Link href="/training-logs" className = {`flex items-center gap-4 px-4 py-3 rounded-xl  ${isTrainingLogsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
                     <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogs.png"} alt="Training Logs icon"/>
@@ -85,7 +85,7 @@ export default function Sidebar() {
                 href = "/"
                 >
                 <img src = "/images/logoutLogo.png" alt="Logout icon" className="mt-4 cursor-pointer" onClick={() => {
-                    logout;
+                    logout();
                 }}/>
             </Link>
             </div>

@@ -28,6 +28,7 @@ export default function Home() {
       const data = await res.json();
 
       if (data.success) {
+        login(data);
         localStorage.setItem("userId", data.userid);
         localStorage.setItem("isAdmin", String(data.isAdmin));
         router.push("/training-logs")

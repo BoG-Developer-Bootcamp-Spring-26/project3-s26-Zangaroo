@@ -85,7 +85,7 @@ export default function Sidebar() {
                 href = "/"
                 >
                 <img src = "/images/logoutLogo.png" alt="Logout icon" className="mt-4 cursor-pointer" onClick={() => {
-                    logout;
+                    logout();
                 }}/>
             </Link>
             </div>

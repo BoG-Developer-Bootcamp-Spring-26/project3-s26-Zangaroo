@@ -15,7 +15,7 @@ export default function Sidebar() {
 
 
     return (
-        <div className="max-w-84 m-2 flex flex-col h-full border-r p-4">
+        <div className="w-84 m-2 flex flex-col h-full border-r p-4">
             <div id="public-view" className="flex flex-col gap-4 gap-4">
                 <Link href="/training-logs" className = {`flex items-center gap-4 px-4 py-3 rounded-xl  ${isTrainingLogsActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}>
                     <img src={isTrainingLogsActive ? "/images/activeTrainingLogo.png" : "/images/inactiveTrainingLogs.png"} alt="Training Logs icon"/>

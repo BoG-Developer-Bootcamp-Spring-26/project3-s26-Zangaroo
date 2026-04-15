@@ -29,7 +29,9 @@ export default function Home() {
 
       if (data.success) {
         login(data);
-        router.push("/training-logs");
+        localStorage.setItem("userId", data.userid);
+        localStorage.setItem("isAdmin", String(data.isAdmin));
+        router.push("/training-logs")
       } else {
         setError(data.error);
       }

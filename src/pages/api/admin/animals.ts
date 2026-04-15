@@ -14,6 +14,7 @@ export default async function handler(
         const animals = await Animal.find({}).populate("owner", "fullName");
         return res.status(200).json({ success: true, data: animals });
     } catch (error) {
+        console.error("GET animals error:", error);
         return res
             .status(500)
             .json({ success: false, error: "Failed to retrieve animals" });

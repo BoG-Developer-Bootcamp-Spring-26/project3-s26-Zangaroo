@@ -1,7 +1,14 @@
 import Sidebar from "@/component/sidebar";
 import ProgressBar from "@/component/progressbar";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "@/AuthContext";
+
+type Animal = {
+    _id: string;
+    name: string;
+    breed: string;
+};
 
 export default function CreateTrainingLog() {
     const [title, setTitle] = useState("");
@@ -11,7 +18,10 @@ export default function CreateTrainingLog() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const [animals, setAnimals] = useState<Animal[]>([]);
+    
     const router = useRouter();
+    const { user } = useAuth();
 
     const handleCreateTrainingLog = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,6 +32,7 @@ export default function CreateTrainingLog() {
             const newTrainingLog = {
                 title,
                 animalId,
+                userId: user?.id,
                 hours: Number(hours),
                 description,
                 date: new Date().toISOString()
@@ -48,6 +59,28 @@ export default function CreateTrainingLog() {
             setLoading(false);
         }
     }
+
+    async function getAnimals(): Promise<Animal[]> {
+        try {
+            const res = await fetch("/api/admin/animals");
+
+            if (!res.ok) {
+                throw new Error("Failed to fetch animals");
+            }
+
+            const data = await res.json();
+            return data.data;
+        } catch (error) {
+            console.error("Failed to fetch animals:", error);
+            return [];
+        }
+    }
+
+    useEffect(() => {
+        getAnimals().then((animalData) => {
+            setAnimals(animalData);
+        });
+    }, []);
 
     return (
         <div className="relative flex min-h-screen flex-col">
@@ -84,8 +117,11 @@ export default function CreateTrainingLog() {
                                         className="h-[64px] rounded-[10px] border border-[#BDBDBD] bg-white px-6 text-[18px] text-[#555555] outline-none"
                                     >
                                         <option value="">Select animal</option>
-                                        <option value="1">Lucy - Golden Retriever</option>
-                                        <option value="2">Max - German Shepherd</option>
+                                        {animals.map((animal) => (
+                                            <option value={animal._id} key={animal._id}>
+                                                {animal.name} - {animal.breed}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
@@ -114,7 +150,8 @@ export default function CreateTrainingLog() {
                                     <button 
                                         type="button"
                                         className="h-[56px] w-[160px] rounded-[8px] border border-[#D21312] bg-white text-[20px] font-medium text-[#D21312]"
-                                    >
+                                        onClick={() => router.push("/training-logs")}
+                                   >
                                         Cancel
                                     </button>
 

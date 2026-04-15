@@ -30,7 +30,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className=" w-fullrelative flex min-h-screen flex-col ">
+        <div className=" w-full relative flex min-h-screen flex-col ">
             <div>
                 <header className="flex items-center gap-3 border-b border-gray-300 px-10 py-6 shadow-md">
                     <img src="/images/appLogo.png"/>

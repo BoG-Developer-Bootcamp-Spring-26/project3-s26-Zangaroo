@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
-import { AnimalCard } from "./animal_card";
+import { AnimalCard } from "../component/animal_card";
 import { Animal } from "../types/animal";
 import { useEffect } from "react";
 import Sidebar from "@/component/sidebar";
-import ProgressBar from "@/component/progressbar";
+import Link from "next/link"; 
 
 async function getAnimals(): Promise<Animal[]> {
     try {
-        const res = await fetch("/api/animal", {
+        const res = await fetch("/api/admin/animals", {
             method: "GET"
         });
         if (!res.ok) {
@@ -30,8 +30,13 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="relative flex flex-col min-h-screen">
-            <ProgressBar/>
+        <div className=" w-fullrelative flex min-h-screen flex-col ">
+            <div>
+                <header className="flex items-center gap-3 border-b border-gray-300 px-10 py-6 shadow-md">
+                    <img src="/images/appLogo.png"/>
+                    <h1 className="text-5xl font-medium text-black font-oswald">Progress</h1>
+                </header>
+            </div>
 
             <div className="flex flex-1">
                 {/* Sidebar */}
@@ -42,17 +47,17 @@ export default function Home() {
                 <main className="flex-1 p-8">
                     {/* Animals header and create new button */}
                     <div className="flex items-center justify-between px-2 py-4 border-b border-gray-200 mb-8">
-                        <h2 className="text-xl font-semibold text-neutral-700">
+                        <h2 className="font-heebo text-[30px] font-medium leading-none tracking-[-0.025em] text-neutral-700">
                             Animals
                         </h2>
 
-                        <button
-                            className="flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-all group"
-                            onClick={() => alert("Create Modal Logic Goes Here")}
-                        >
-                            <img src="/images/createNewLogo.png"/>
-                            <span>Create new</span>
-                        </button>
+                        <Link href="/create_new_animal">
+                            <button className="flex items-center gap-2 font-heebo text-[22px] font-medium leading-none tracking-[-0.025em] text-neutral-500 hover:text-neutral-900 transition-all group">
+
+                                <img src="/images/createNewLogo.png"/>
+                                <span>Create new</span>
+                            </button>
+                        </Link>
                     </div>
                     
                     {/* Animal's card display */}
@@ -65,5 +70,4 @@ export default function Home() {
             </div>
         </div>
     );
-        
 }

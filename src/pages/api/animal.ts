@@ -2,60 +2,127 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectDb from "../../../server/mongodb/connectDb";
 import Animal from "../../../server/mongodb/models/Animal";
 import mongoose from "mongoose";
+import User from "../../../server/mongodb/models/User";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  
-  if (req.method === "GET") {
-    try {
-      await connectDb();
-      const animals = await Animal.find();
-      return res.status(200).json({ success: true, data: animals });
-    } catch (error) {
+
+  if (req.method === "POST") {
+    const { name, breed, ownerId, hoursTrained, profilePicture } = req.body;
+
+    if (typeof name !== "string" ||
+      name.trim() === "" ||
+      typeof breed !== "string" ||
+      breed.trim() === "" ||
+      typeof ownerId !== "string" ||
+      ownerId.trim() === "" ||
+      hoursTrained === undefined
+    ) {
       return res
-        .status(500)
-        .json({ success: false, error: "Failed to fetch animals" });
+        .status(400)
+        .json({ success: false, error: "Please fill in all  required fields" });
     }
-    }
-  
-    if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method not allowed" });
-  }
-
-  const { name, breed, ownerId, hoursTrained, profilePicture } = req.body;
-
-  if (!name || !breed || !ownerId || hoursTrained === undefined || !profilePicture) {
-    return res
-      .status(400)
-      .json({ success: false, error: "Please fill in all fields" });
-  }
 
   if (!mongoose.Types.ObjectId.isValid(ownerId)) {
-    return res.status(400).json({ success: false, error: "Invalid owner ID" });
+    return res
+      .status(400)
+      .json({ success: false, error: "Invalid owner ID" });
   }
 
   if (typeof hoursTrained !== "number" || hoursTrained < 0) {
-    return res.status(400).json({ success: false, error: "Hours trained must be a non-negative number" });
+    return res.status(400).json({ 
+      success: false, 
+      error: "Hours trained must be a non-negative number", 
+    });
   }
 
   try {
     await connectDb();
 
+    const owner = await User.findById(ownerId);
+    if (!owner) {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Owner not found", 
+      });
+    }
+
     const newAnimal = await Animal.create({
-      name,
-      breed,
+      name: name.trim(),
+      breed: breed.trim(),
       owner: ownerId,
       hoursTrained,
       profilePicture
     });
-    return res.status(201).json({ 
-        success: true, data: newAnimal 
+    
+    return res.status(200).json({ 
+        success: true, 
+        data: newAnimal,
     });
   } catch (error) {
-    return res
-        .status(500)
-        .json({ success: false, error: "Failed to create animal" });
+    return res.status(500).json({ 
+      success: false, 
+      error: "Failed to create animal", 
+    });
+    }
   }
+
+  if (req.method === "PATCH") {
+    const {animalId, hoursTrained} = req.body;
+
+    if (typeof animalId !== "string" || animalId.trim() === "" || hoursTrained === undefined
+    ) {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Please fill in all required fields" 
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(animalId)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Invalid animal ID" 
+      });
+    }
+
+    if (typeof hoursTrained !== "number" || hoursTrained < 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Hours trained must be a non-negative number", 
+      });
+    }
+
+    try {
+      await connectDb();
+
+      const updatedAnimal = await Animal.findByIdAndUpdate(
+        animalId,
+        { hoursTrained },
+        { new: true }
+      );
+
+      if (!updatedAnimal) {
+        return res.status(404).json({ 
+          success: false, 
+          error: "Animal not found" 
+        });
+      }
+
+      return res.status(200).json({ 
+        success: true, 
+        data: updatedAnimal,
+       });
+    } catch (error) {
+      return res.status(500).json({ 
+        success: false, 
+        error: "Failed to update animal", 
+      });
+    }
+  }
+  return res.status(405).json({ 
+    success: false, 
+    error: "Method not allowed" 
+  });
 }

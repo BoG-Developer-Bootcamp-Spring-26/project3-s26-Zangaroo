@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Sidebar from "@/component/sidebar";
 import { useRouter } from "next/router";
+import ProgressBar from "@/component/progressbar";
 
 export default function CreateNewAnimal() {
     const router = useRouter();
@@ -10,7 +11,7 @@ export default function CreateNewAnimal() {
     const [formData, setFormData] = useState({
         name: "",
         breed: "",
-        hoursTrained: 0,
+        hoursTrained: "",
         birthMonth: "",
         birthDay: "",
         birthYear: "",
@@ -36,7 +37,7 @@ export default function CreateNewAnimal() {
                 name: formData.name,
                 breed: formData.breed,
                 ownerId: ownerId,
-                hoursTrained: formData.hoursTrained,
+                hoursTrained: Number(formData.hoursTrained),
                 profilePicture: "/images/_.jpeg"
             }),
         });
@@ -51,33 +52,29 @@ export default function CreateNewAnimal() {
         router.push("/animal_dashboard");
     };
     
-    const inputClass = "w-full h-[70px] rounded-[5px] border-2 border-gray-300 px-4 font-heebo text-[24px] font-medium leading-none text-gray-700 placeholder:font-heebo placeholder:text-[24px] placeholder:font-medium placeholder:leading-none placeholder:text-gray-400";
-    const labelClass = "mb-1 block font-heebo text-[26px] font-medium leading-none text-gray-800";
+    const inputClass = "h-12 w-full rounded-[5px] border-2 border-gray-300 px-4 font-heebo text-lg font-medium leading-none text-gray-700 placeholder:font-heebo placeholder:text-lg placeholder:font-medium placeholder:leading-none placeholder:text-gray-400";
+    const labelClass = "mb-1 block font-heebo text-lg font-medium leading-none text-gray-800";
 
     return (
-        <div className=" w-fullrelative flex min-h-screen flex-col ">
-            <div>
-                <header className="flex items-center gap-3 border-b border-gray-300 px-10 py-6 shadow-md">
-                    <img src="/images/appLogo.png"/>
-                    <h1 className="text-5xl font-medium text-black font-oswald">Progress</h1>
-                </header>
-            </div>
+        <div className="relative flex min-h-screen flex-col">
+            <ProgressBar />
 
-            <div className="flex flex-1">
+            <div className="flex flex-1 min-h-0">
                 {/* Sidebar */}
-                <aside className="border-l border-gray-300">
+                <aside className="hidden md:block">
                     <Sidebar/>
                 </aside>
 
-                <main className="flex-1 p-8">
+                <main className="flex-1 min-w-0 p-6 lg:p-8">
+                    <div className="mx-auto w-full max-w-5xl">
                     {/* Animals header */}
-                    <div className="flex items-center justify-between px-2 py-4 border-b border-gray-200 mb-8">
-                        <h2 className="font-heebo text-[30px] font-medium leading-none tracking-[-0.025em] text-neutral-700">
+                    <div className="mb-6 flex items-center justify-between border-b border-gray-200 px-2 py-3">
+                        <h2 className="font-heebo text-2xl font-medium leading-none tracking-[-0.025em] text-neutral-700">
                             Animals
                         </h2>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="mx-auto w-full max-w-[881px] space-y-6">
+                    <form onSubmit={handleSubmit} className="mx-auto w-full max-w-4xl space-y-4">
                         {/*Animal Name*/}
                         <div>
                             <label className={labelClass}>Animal Name</label>
@@ -112,7 +109,7 @@ export default function CreateNewAnimal() {
                                 placeholder="Hours"
                                 className={inputClass}
                                 value={formData.hoursTrained}
-                                onChange={(e) => setFormData({ ...formData, hoursTrained: Number(e.target.value) })}
+                                onChange={(e) => setFormData({ ...formData, hoursTrained: e.target.value })}
                                 required
                             />
                         </div>
@@ -165,28 +162,29 @@ export default function CreateNewAnimal() {
                             <label className={labelClass}>Note</label>
                             <textarea
                                 placeholder="Note"
-                                rows={4}
-                                className={`${inputClass} h-[192px] py-3`}
+                                rows={3}
+                                className="w-full rounded-[5px] border-2 border-gray-300 px-4 py-3 font-heebo text-lg font-medium leading-normal text-gray-700 placeholder:font-heebo placeholder:text-lg placeholder:font-medium placeholder:text-gray-400"
                                 value={formData.Note}
                                 onChange={(e) => setFormData({...formData, Note: e.target.value})}
                             />
                         </div>
 
                         {/*Buttons*/}
-                        <div className="flex justify-start gap-10 pt-6">
+                        <div className="flex justify-start gap-6 pt-2">
                             <button type="button" onClick={() => router.back()}
-                                className="h-[55px] w-[180px] rounded-[5px] font-heebo text-[28px] font-medium leading-none border border-red-600 text-red-600 hover:bg-red-50 transition-colors"
+                                className="h-11 w-36 rounded-[5px] border border-red-600 font-heebo text-xl font-medium leading-none text-red-600 transition-colors hover:bg-red-50"
                             >
                                 Cancel
                             </button>
 
                             <button type="submit"
-                                className="h-[55px] w-[180px] rounded-[5px] font-heebo text-[28px] font-medium leading-none bg-red-700 text-white hover:bg-red-800 transition-colors font-medium"
+                                className="h-11 w-36 rounded-[5px] bg-red-700 font-heebo text-xl font-medium leading-none text-white transition-colors hover:bg-red-800"
                             >
                                 Save
                             </button>
                         </div>
-                    </form>         
+                    </form>
+                    </div>
                 </main>
             </div>
         </div>

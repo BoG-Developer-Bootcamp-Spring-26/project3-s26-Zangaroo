@@ -4,10 +4,22 @@ import TrainingLog from "../../../server/mongodb/models/Training-Log";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "GET") {
+        const { userId } = req.query;
+        
         try {
             await connectDb();
+
+            const filter =
+                typeof userId === "string" && userId.trim() !== ""
+                    ? { userId }
+                    : {};
         
-            const trainingLogs = await TrainingLog.find().populate("userId").populate("animalId");
+            // Sort by newest created records first. `_id` works for older documents
+            // that were created before timestamps were enabled.
+            const trainingLogs = await TrainingLog.find(filter)
+                .sort({ _id: -1 })
+                .populate("userId")
+                .populate("animalId");
             
             const formattedTrainingLogs = trainingLogs.map((log) => ({
                 id: log._id.toString(),
@@ -30,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === "POST") {
         const {title, date, animalId, userId, hours, description} = req.body;
 
-        if (!title || !date || !animalId || !userId || !hours || !description) {
+        if (!title || !date || !animalId || !userId || hours === undefined || description === undefined || description.trim() === "") {
             return res.status(400).json({message : "Missing required field"})
         }
         

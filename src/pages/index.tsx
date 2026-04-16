@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/AuthContext";
+import ProgressBar from "@/component/progressbar";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -43,61 +44,57 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      <header className="flex items-center gap-3 border-b border-gray-300 px-4 py-4 shadow-md sm:px-6 sm:py-5 lg:px-10 lg:py-6">
-        <img
-          src="/images/appLogo.png"
-          alt="App logo"
-          className="h-10 w-auto sm:h-12"
-        />
-        <h1 className="text-3xl font-medium text-black font-oswald sm:text-4xl lg:text-5xl">
-          Progress
-        </h1>
-      </header>
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-6 font-heebo sm:px-6 sm:py-8">
-        <h2 className="mb-6 text-3xl font-bold text-black sm:mb-8 sm:text-4xl lg:text-5xl">
-          Login
-        </h2>
-        <div className="w-full max-w-md lg:max-w-xl">
-          <form className="flex flex-col gap-6 sm:gap-8" onSubmit={handleLogin}>
-            <div>
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-[linear-gradient(180deg,#fffaf7_0%,#ffffff_55%,#fff4f1_100%)]">
+      <ProgressBar showSearch={false} />
+      <main className="flex flex-1 items-center justify-center px-4 py-6 font-heebo sm:px-6 sm:py-8 lg:px-8">
+        <div className="w-full max-w-xl">
+          <div className="w-full rounded-[28px] border border-white/60 bg-white/90 p-6 shadow-[0_20px_60px_rgba(210,19,18,0.08)] backdrop-blur sm:p-8 lg:p-10">
+            <h2 className="mb-2 text-3xl font-bold text-black sm:text-4xl">
+              Login
+            </h2>
+            <p className="mb-6 text-sm text-neutral-500 sm:mb-8 sm:text-base">
+              Enter your account details to continue.
+            </p>
+            <form className="flex flex-col gap-6 sm:gap-8" onSubmit={handleLogin}>
+              <div>
               <input
                 id="email"
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent pb-2 text-lg outline-none sm:text-xl"
+                className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent pb-3 text-lg outline-none sm:text-xl"
               />
-            </div>
-            <div>
+              </div>
+              <div>
               <input
                 id="password"
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent pb-2 text-lg outline-none sm:text-xl"
+                className="w-full border-0 border-b-2 border-[#d13a2f] bg-transparent pb-3 text-lg outline-none sm:text-xl"
               />
-            </div>
-            <button
+              </div>
+              <button
               type="submit"
               disabled={loading}
-              className="mx-auto w-full min-w-[200px] rounded-[20px] bg-[#D21312] px-8 py-3 text-xl font-medium text-white sm:w-auto sm:text-2xl lg:text-3xl"
-            >
+              className="w-full rounded-[20px] bg-[#D21312] px-8 py-3 text-xl font-medium text-white sm:text-2xl"
+              >
               {loading ? "Logging in ..." : "Log in"}
-            </button>
-            {error && <p className="text-red-600">{error}</p>}
-          </form>
+              </button>
+              {error && <p className="text-red-600">{error}</p>}
+            </form>
+            <p className="mt-6 text-center text-base font-light text-gray-600 sm:text-lg">
+              Don&apos;t have an account?
+              <Link href="/signup" className="font-semibold text-black">
+                {" "}Sign up
+              </Link>
+            </p>
+          </div>
         </div>
-        <p className="mt-4 text-center text-base font-light text-gray-600 sm:text-lg lg:text-xl">
-          Don&apos;t have an account?
-          <Link href="/signup" className="font-semibold text-black">
-            {" "}Sign up
-          </Link>
-        </p>
       </main>
-      <div className="pointer-events-none absolute bottom-0 left-0 w-24 sm:w-32 lg:w-auto">
+      <div className="pointer-events-none absolute bottom-0 left-0 w-24 opacity-70 sm:w-32 lg:w-auto">
         <img src="/images/quarterCircle.png" alt="" />
       </div>
       <footer className="px-4 pb-4 text-center font-light sm:px-6 sm:pb-6">

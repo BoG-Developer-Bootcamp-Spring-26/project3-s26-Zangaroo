@@ -10,47 +10,57 @@ type TrainingLogsCardProps = {
   description: string;
 };
 
-export default function TrainingLogsCard( {title, date, month, year, userName, animalName, animalBreed, hours, 
-    description}: TrainingLogsCardProps ) {
+export default function TrainingLogsCard( {title, date, month, year, userName, animalName, animalBreed, hours, description
+
+}: TrainingLogsCardProps ) {
 
     return (
-        <div className= "flex gap-4 rounded-[20px] max-w-291 h-40.5 shadow-lg ml-10 mt-4">
-            <div id="date" className="flex flex-col items-center justify-center font-medium bg-[#070A52D9] p-4 rounded-tl-[20px] rounded-bl-[20px] text-white justify-center align-items font-oswald">
-                <div className="text-[48px]">{date}</div>
-                <div>
-                    {month} - {year} 
-                </div>
+      <div className="w-full overflow-hidden rounded-[20px] bg-white shadow-lg">
+        <div className="flex flex-col items-stretch sm:flex-row">
+          <div
+            id="date"
+            className="flex shrink-0 flex-row items-center justify-center gap-2 bg-[#070A52D9] px-4 py-3 font-oswald text-white sm:w-24 sm:flex-col sm:gap-0 lg:w-28"
+          >
+            <div className="text-3xl leading-none lg:text-4xl">{date}</div>
+            <div className="text-center text-xs sm:mt-1 lg:text-sm">
+              {month} - {year}
             </div>
-            <div id="info" className="font-heebo">
-                <div id="header" className = "flex gap-4 items-center">
-                    <div className="text-[30px] font-bold">{title}</div>
-                    <div className="text-[#999999] text-[20px] bold-medium">• {hours} hours</div>
-                </div>
+          </div>
 
-                <div id="identifier" className = "flex gap-6 text-[#999999] font-medium text-[20px]">
-                    {userName} - {animalBreed} - {animalName}          
-                </div>
+          <div id="info" className="min-w-0 flex-1 p-4 font-heebo lg:p-5">
+            <div
+              id="header"
+              className="flex flex-col gap-1 xl:flex-row xl:items-center xl:gap-4"
+            >
+              <div className="break-words text-lg font-bold sm:text-xl lg:text-2xl">{title}</div>
+              <div className="text-sm font-medium text-[#999999] lg:text-base">
+                • {hours} hours
+              </div>
+            </div>
+
+            <div
+              id="identifier"
+              className="mt-1 break-words text-sm font-medium text-[#999999] lg:text-base"
+            >
+              {userName} - {animalBreed} - {animalName}
+            </div>
+
+            <div id="description" className="mt-2 break-words text-sm leading-6 lg:text-base">
+              {description}
+            </div>
+          </div>
 
           <div
-            id="identifier"
-            className="mt-1 break-words text-sm font-medium text-[#999999] lg:text-base"
+            id="image"
+            className="flex shrink-0 items-center justify-end border-t border-gray-100 px-4 py-3 sm:border-t-0 sm:pl-0 sm:pr-4 sm:pt-4"
           >
-            {userName} - {animalBreed} - {animalName}
+            <img
+              src="/images/trainingLogCardEditButton.png"
+              alt="Edit training log"
+              className="h-7 w-7 lg:h-8 lg:w-8"
+            />
           </div>
-
-          <div id="description" className="mt-2 break-words text-sm lg:text-base">
-            {description}
-          </div>
-        </div>
-
-        <div id="image" className="flex shrink-0 items-start justify-end p-3 lg:p-4">
-          <img
-            src="/images/trainingLogCardEditButton.png"
-            alt="Edit training log"
-            className="h-7 w-7 lg:h-8 lg:w-8"
-          />
         </div>
       </div>
-    </div>
   );
 }

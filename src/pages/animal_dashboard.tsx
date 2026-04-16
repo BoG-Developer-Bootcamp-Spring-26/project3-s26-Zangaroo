@@ -30,40 +30,55 @@ async function getAnimals(): Promise<Animal[]> {
 
 export default function Home() {
   const [animals, setAnimals] = useState<Animal[]>([]);
+  // Search bar state for filtering animals by name
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getAnimals().then(setAnimals);
   }, []);
 
+  // Search filtering is applied before rendering the animal cards
+  const query = search.trim().toLowerCase();
+  const filteredAnimals = animals.filter((animal) =>
+    animal.name.toLowerCase().includes(query)
+  );
+
   return (
     <div className="relative flex min-h-screen flex-col">
-      <ProgressBar />
+      <ProgressBar
+        showSearch={true}
+        searchValue={search}
+        onSearchChange={setSearch}
+      />
 
-      <div className="flex flex-1 min-h-0">
-        <aside className="hidden md:block">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <aside className="shrink-0 md:w-72">
           <Sidebar />
         </aside>
 
-        <main className="flex-1 min-w-0 p-6 lg:p-8">
-          <div className="mx-auto w-full max-w-7xl">
-          <div className="mb-6 flex items-center justify-between border-b border-gray-200 px-2 py-3 sm:mb-8 sm:py-4">
-            <h2 className="font-heebo text-2xl font-medium leading-none tracking-[-0.025em] text-neutral-700 sm:text-3xl">
-              Animals
-            </h2>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          <div className="mb-6 flex flex-col gap-4 border-b border-gray-200 px-2 py-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:py-4">
+              <h2 className="px-2 py-1 font-heebo text-2xl font-medium leading-none tracking-[-0.025em] text-neutral-700 sm:text-[30px]">
+                Animals
+              </h2>
 
-            <Link href="/create_new_animal">
-              <button className="group flex items-center gap-2 font-heebo text-base font-medium leading-none tracking-[-0.025em] text-neutral-500 transition-all hover:text-neutral-900 sm:text-lg lg:text-[22px]">
-                <img src="/images/createNewLogo.png" alt="Create new animal" />
+              <Link
+                href="/create_new_animal"
+                className="group inline-flex items-center gap-2 self-start rounded-full border border-gray-200 px-4 py-2 font-heebo text-sm font-medium leading-none tracking-[-0.025em] text-neutral-600 transition-all hover:border-neutral-900 hover:text-neutral-900 sm:text-base lg:text-lg"
+              >
+                <img
+                  src="/images/createNewLogo.png"
+                  alt="Create new animal"
+                  className="h-5 w-5"
+                />
                 <span>Create new</span>
-              </button>
-            </Link>
+              </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6 xl:grid-cols-3">
-            {animals.map((animal) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filteredAnimals.map((animal) => (
               <AnimalCard key={animal._id.toString()} animal={animal} compact />
             ))}
-          </div>
           </div>
         </main>
       </div>

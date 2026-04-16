@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/AuthContext";
+import ProgressBar from "@/component/progressbar";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -44,16 +45,7 @@ export default function Home() {
 
   return (
     <div className="relative flex min-h-screen flex-col">
-      <header className="flex items-center gap-3 border-b border-gray-300 px-4 py-4 shadow-md sm:px-6 sm:py-5 lg:px-10 lg:py-6">
-        <img
-          src="/images/appLogo.png"
-          alt="App logo"
-          className="h-10 w-auto sm:h-12"
-        />
-        <h1 className="text-3xl font-medium text-black font-oswald sm:text-4xl lg:text-5xl">
-          Progress
-        </h1>
-      </header>
+      <ProgressBar />
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-6 font-heebo sm:px-6 sm:py-8">
         <h2 className="mb-6 text-3xl font-bold text-black sm:mb-8 sm:text-4xl lg:text-5xl">
           Login

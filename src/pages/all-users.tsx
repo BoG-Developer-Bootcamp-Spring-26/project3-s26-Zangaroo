@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Sidebar from "@/component/sidebar";
 import Link from "next/link"; 
 import UserCard from "@/component/user_card";
+import ProgressBar from "@/component/progressbar";
 
 
 export default function AllUsersPage() {
@@ -33,13 +34,7 @@ export default function AllUsersPage() {
 
     return (
         <div className="w-full flex min-h-screen flex-col">
-            
-            <header className="flex items-center gap-3 border-b border-gray-300 px-10 py-6 shadow-md">
-                <img src="/images/appLogo.png" />
-                <h1 className="text-5xl font-medium text-black font-oswald">
-                    Progress
-                </h1>
-            </header>
+            <ProgressBar />
             <div className="flex flex-1">
                 <aside className="border-r border-gray-300">
                     <Sidebar />

@@ -76,6 +76,7 @@ export default function Home() {
                             return (
                                 <TrainingLogsCard
                                     key={log.id}
+                                    id={log.id}
                                     title={log.title}
                                     date={day}
                                     month={month}

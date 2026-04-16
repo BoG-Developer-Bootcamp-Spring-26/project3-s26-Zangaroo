@@ -31,15 +31,26 @@ export default function TrainingLogsCard( {title, date, month, year, userName, a
                     {userName} - {animalBreed} - {animalName}          
                 </div>
 
-                <div id="description" className="text-[20px] mt-4">
-                    {description}
-                </div>
+          <div
+            id="identifier"
+            className="mt-1 break-words text-sm font-medium text-[#999999] lg:text-base"
+          >
+            {userName} - {animalBreed} - {animalName}
+          </div>
 
-            </div>
-
-            <div id="image" className="flex ml-auto p-8">
-                    <img src="/images/trainingLogCardEditButton.png"></img>
-            </div>
+          <div id="description" className="mt-2 break-words text-sm lg:text-base">
+            {description}
+          </div>
         </div>
-    )
+
+        <div id="image" className="flex shrink-0 items-start justify-end p-3 lg:p-4">
+          <img
+            src="/images/trainingLogCardEditButton.png"
+            alt="Edit training log"
+            className="h-7 w-7 lg:h-8 lg:w-8"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }

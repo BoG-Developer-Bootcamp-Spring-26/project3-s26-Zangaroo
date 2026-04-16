@@ -9,6 +9,40 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
+  if (req.method === "GET") {
+    const { ownerId } = req.query;
+
+    if (typeof ownerId !== "string" || ownerId.trim() === "") {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Owner ID is required and must be a non-empty string", 
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(ownerId)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: "Invalid owner ID" 
+      });
+    }
+
+    try {
+      await connectDb();
+
+      const animals = await Animal.find({ owner: ownerId }).populate("owner", "fullName");
+      
+      return res.status(200).json({ 
+        success: true, 
+        data: animals,
+       });
+    } catch (error) {
+      return res.status(500).json({ 
+        success: false, 
+        error: "Failed to fetch animals", 
+      });
+    }
+  }
+
   if (req.method === "POST") {
     const { name, breed, ownerId, hoursTrained, profilePicture } = req.body;
 

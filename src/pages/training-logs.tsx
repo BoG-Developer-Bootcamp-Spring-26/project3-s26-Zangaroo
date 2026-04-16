@@ -51,11 +51,10 @@ export default function TrainingLogs() {
                     <Sidebar/>
                 </aside>
 
-                <main className="flex-1 p-8">
-                    <div className="mb-8 flex items-center justify-between border-b border-gray-200 px-2 py-4">
-                        <h2 className="text-xl font-semibold text-neutral-700">
-                            Training Logs
-                        </h2>
+      <div className="flex flex-1 min-h-0">
+        <aside className="hidden md:block">
+          <Sidebar />
+        </aside>
 
                         <Link
                             className="group flex items-center gap-2 text-sm font-medium text-neutral-500 transition-all hover:text-neutral-900"

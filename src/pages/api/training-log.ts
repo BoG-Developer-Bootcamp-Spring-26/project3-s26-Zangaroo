@@ -114,10 +114,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).json({ message: "Training log not found" });
             }
 
-            if (existingTrainingLog.userId.toString() !== userId) {
-                return res.status(400).json({ message: "User does not match training log" });
-            }
-
             existingTrainingLog.title = title;
             existingTrainingLog.animalId = animalId;
             existingTrainingLog.hours = hours;

@@ -11,8 +11,8 @@ export default function Sidebar() {
   const isAllAnimalsActive = router.pathname === "/all_animals";
   const isAllUsersActive = router.pathname === "/all-users";
   const isCreateTrainingLogsActive = router.pathname === "/create_training-log";
-  const { user } = useAuth();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  
 
   const publicLinks = [
     {

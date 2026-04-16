@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 type TrainingLogsCardProps = {
+  id: string;
   title: string;
   date: string;
   month: string;
@@ -10,9 +13,7 @@ type TrainingLogsCardProps = {
   description: string;
 };
 
-export default function TrainingLogsCard( {title, date, month, year, userName, animalName, animalBreed, hours, description
-
-}: TrainingLogsCardProps ) {
+export default function TrainingLogsCard( {id, title, date, month, year, userName, animalName, animalBreed, hours, description}: TrainingLogsCardProps ) {
 
     return (
       <div className="w-full overflow-hidden rounded-[20px] bg-white shadow-lg">
@@ -54,11 +55,13 @@ export default function TrainingLogsCard( {title, date, month, year, userName, a
             id="image"
             className="flex shrink-0 items-center justify-end border-t border-gray-100 px-4 py-3 sm:border-t-0 sm:pl-0 sm:pr-4 sm:pt-4"
           >
-            <img
-              src="/images/trainingLogCardEditButton.png"
-              alt="Edit training log"
-              className="h-7 w-7 lg:h-8 lg:w-8"
-            />
+            <Link href={`/edit_training-log/${id}`}>
+              <img
+                src="/images/trainingLogCardEditButton.png"
+                alt="Edit training log"
+                className="h-7 w-7 lg:h-8 lg:w-8"
+              />
+            </Link>
           </div>
         </div>
       </div>

@@ -38,8 +38,8 @@ export default function Sidebar() {
       </div>
 
       {user?.isAdmin && (
-        <div id="admin-view" className="mt-8 flex flex-col gap-4">
-          <p className="mb-2">Admin Access</p>
+        <div id="admin-view" className="mt-8 flex flex-col gap-4 border-t border-gray-300 pt-6">
+          <p className="px-4">Admin Access</p>
           <Link
             href="/all-training"
             className={`flex items-center gap-4 rounded-xl px-4 py-3 ${isAllTrainingActive ? "bg-[#D21312] text-white font-semibold" : "text-gray-600"}`}

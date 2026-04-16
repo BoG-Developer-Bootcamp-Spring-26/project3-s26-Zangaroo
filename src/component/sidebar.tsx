@@ -5,12 +5,14 @@ import { useAuth } from "@/AuthContext";
 export default function Sidebar() {
   const router = useRouter();
 
-  const isTrainingLogsActive = router.pathname === "/training-logs";
-  const isAnimalsActive = router.pathname === "/animal_dashboard";
-  const isAllTrainingActive = router.pathname === "/all-training";
-  const isAllAnimalsActive = router.pathname === "/all_animals";
-  const isAllUsersActive = router.pathname === "/all-users";
-  const { user, logout } = useAuth();
+    const isTrainingLogsActive = router.pathname === "/training-logs";
+    const isAnimalsActive = router.pathname === "/animal_dashboard";
+    const isAllTrainingActive = router.pathname === "/all-training";
+    const isAllAnimalsActive = router.pathname === "/all-animals";
+    const isAllUsersActive = router.pathname === "/all-users";
+    const isCreateTrainingLogsActive = router.pathname === "/create_training-log";
+    const { user } = useAuth(); 
+    const { logout } = useAuth(); 
 
   return (
     <div className="flex h-full w-full flex-col border-r border-gray-300 p-4">

@@ -68,12 +68,10 @@ export default function CreateTrainingLog() {
             if (user?.isAdmin) {
                 res = await fetch("/api/admin/animals");
             } else {
-                const ownerId = localStorage.getItem("userId");
-
-                if (!ownerId) {
+                if (!user?.id) {
                     return [];
                 }
-                res = await fetch(`/api/animal?ownerId=${ownerId}`);
+                res = await fetch(`/api/animal?ownerId=${user.id}`);
             }       
             
             if (!res.ok) {

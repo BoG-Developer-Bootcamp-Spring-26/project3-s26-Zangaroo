@@ -4,6 +4,7 @@ import Sidebar from "@/component/sidebar";
 import ProgressBar from "@/component/progressbar";
 import TrainingLogsCard from "./training-logs_card";
 import Link from "next/link";
+import { useAuth } from "@/AuthContext";
 
 type TrainingLog = {
     id: string;
@@ -16,38 +17,35 @@ type TrainingLog = {
     description: string;
 };
 
-async function getTrainingLogs(): Promise<TrainingLog[]> {
-    try {
-        const ownerId = localStorage.getItem("userId");
-        if (!ownerId) {
-            return [];
-        }
-        
-        const res = await fetch(`/api/training-log?userId=${ownerId}`);
-        if (!res.ok) {
-            throw new Error("Failed to fetch training log data");
-        }
-
-        const data = await res.json();
-        return Array.isArray(data.data) ? data.data : [];
-
-    }
-    catch(error) {
-        console.error("Failed to fetch training logs:", error);
-        return [];
-    }
-}
-
 export default function TrainingLogs() {
     const [trainingLogs, setTrainingLogs] = useState<TrainingLog[]>([]);
     // Search bar state for filtering training logs by title
     const [search, setSearch] = useState("");
+    const { user } = useAuth();
 
     useEffect(() => {
-        getTrainingLogs().then((logs) => {
-            setTrainingLogs(logs);
-        });
-    }, [])
+        if (!user?.id) {
+            setTrainingLogs([]);
+            return;
+        }
+
+        const fetchTrainingLogs = async () => {
+            try {
+                const res = await fetch(`/api/training-log?userId=${user.id}`);
+                if (!res.ok) {
+                    throw new Error("Failed to fetch training log data");
+                }
+
+                const data = await res.json();
+                setTrainingLogs(Array.isArray(data.data) ? data.data : []);
+            } catch (error) {
+                console.error("Failed to fetch training logs:", error);
+                setTrainingLogs([]);
+            }
+        };
+
+        fetchTrainingLogs();
+    }, [user]);
 
     // Search filtering is applied before rendering the training log cards
     const query = search.trim().toLowerCase();

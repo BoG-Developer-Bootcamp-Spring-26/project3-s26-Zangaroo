@@ -3,9 +3,11 @@ import { useState } from "react";
 import Sidebar from "@/component/sidebar";
 import { useRouter } from "next/router";
 import ProgressBar from "@/component/progressbar";
+import { useAuth } from "@/AuthContext";
 
 export default function CreateNewAnimal() {
     const router = useRouter();
+    const { user } = useAuth();
 
     // input form
     const [formData, setFormData] = useState({
@@ -21,9 +23,7 @@ export default function CreateNewAnimal() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const ownerId = localStorage.getItem("userId");
-
-        if (!ownerId) {
+        if (!user?.id) {
             alert("No logged in user found");
             return;
         }
@@ -36,7 +36,7 @@ export default function CreateNewAnimal() {
             body: JSON.stringify({
                 name: formData.name,
                 breed: formData.breed,
-                ownerId: ownerId,
+                ownerId: user.id,
                 hoursTrained: Number(formData.hoursTrained),
                 profilePicture: "/images/_.jpeg"
             }),

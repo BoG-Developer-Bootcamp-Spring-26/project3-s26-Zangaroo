@@ -6,36 +6,38 @@ import { useEffect } from "react";
 import Sidebar from "@/component/sidebar";
 import Link from "next/link";
 import ProgressBar from "@/component/progressbar";
-
-async function getAnimals(): Promise<Animal[]> {
-    try {
-        const ownerId = localStorage.getItem("userId");
-        if (!ownerId) {
-            return [];
-        }
-        
-        const res = await fetch(`/api/animal?ownerId=${ownerId}`, {
-            method: "GET"
-        });
-        if (!res.ok) {
-            throw new Error("Failed to fetch animals");
-        }
-        const data = await res.json();
-        return Array.isArray(data.data) ? data.data : [];
-    } catch (error) {
-        console.error("Failed to fetch animals:", error);
-        return [];
-    }
-}
+import { useAuth } from "@/AuthContext";
 
 export default function Home() {
   const [animals, setAnimals] = useState<Animal[]>([]);
   // Search bar state for filtering animals by name
   const [search, setSearch] = useState("");
+  const { user } = useAuth();
 
   useEffect(() => {
-    getAnimals().then(setAnimals);
-  }, []);
+    if (!user?.id) {
+      setAnimals([]);
+      return;
+    }
+
+    const fetchAnimals = async () => {
+      try {
+        const res = await fetch(`/api/animal?ownerId=${user.id}`, {
+          method: "GET"
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch animals");
+        }
+        const data = await res.json();
+        setAnimals(Array.isArray(data.data) ? data.data : []);
+      } catch (error) {
+        console.error("Failed to fetch animals:", error);
+        setAnimals([]);
+      }
+    };
+
+    fetchAnimals();
+  }, [user]);
 
   // Search filtering is applied before rendering the animal cards
   const query = search.trim().toLowerCase();
